@@ -1828,13 +1828,6 @@ class PromptManager {
     }
 
     /**
-     * AJAX handler for saving settings (delegated to settings class)
-     */
-    public function ajax_save_prompt_settings() {
-        $this->settings->ajax_save_settings();
-    }
-
-    /**
      * AJAX handler for processing blur batch (delegated to blur processor)
      */
     public function ajax_process_blur_batch() {
