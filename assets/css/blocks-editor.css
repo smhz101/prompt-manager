@@ -1,0 +1,90 @@
+/* Prompt Manager Blocks Editor Styles */
+
+.prompt-manager-block-placeholder {
+	padding: 20px;
+	background: #f8f9fa;
+	border: 2px dashed #ddd;
+	border-radius: 8px;
+	text-align: center;
+	color: #666;
+	min-height: 80px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.prompt-manager-block-placeholder p {
+	margin: 5px 0;
+	font-weight: bold;
+}
+
+.prompt-manager-block-placeholder small {
+	margin: 0;
+	font-size: 0.9em;
+	opacity: 0.7;
+}
+
+/* Inspector Controls Styling */
+.components-panel__body .components-base-control {
+	margin-bottom: 16px;
+}
+
+.components-panel__body .components-base-control__label {
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+/* Color Picker Container */
+.components-panel__body > div[style*="marginBottom"] {
+	padding: 10px;
+	background: #f8f9fa;
+	border-radius: 4px;
+	border: 1px solid #e1e5e9;
+}
+
+.components-panel__body > div[style*="marginBottom"] label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+	color: #333;
+}
+
+/* Block Preview Styles in Editor */
+.wp-block-prompt-manager-nsfw-warning {
+	margin: 20px 0;
+	padding: 20px;
+	border-radius: 8px;
+	border: 2px solid currentColor;
+}
+
+.wp-block-prompt-manager-nsfw-warning p {
+	margin-bottom: 15px;
+	font-weight: bold;
+}
+
+.wp-block-prompt-manager-nsfw-warning button {
+	cursor: default;
+}
+
+/* Gallery Preview in Editor */
+.wp-block-prompt-manager-prompt-gallery .prompt-manager-block-placeholder {
+	min-height: 120px;
+}
+
+/* Image Block Preview in Editor */
+.wp-block-prompt-manager-protected-image .prompt-manager-block-placeholder {
+	min-height: 100px;
+}
+
+/* Responsive Editor Styles */
+@media (max-width: 768px) {
+	.prompt-manager-block-placeholder {
+		padding: 15px;
+		min-height: 60px;
+	}
+
+	.prompt-manager-block-placeholder p {
+		font-size: 0.9em;
+	}
+}

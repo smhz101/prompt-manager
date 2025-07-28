@@ -1,0 +1,566 @@
+/* Prompt Manager Styles */
+
+.prompt-meta-field {
+	margin-bottom: 15px;
+}
+
+.prompt-meta-field label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.prompt-meta-field input,
+.prompt-meta-field textarea {
+	width: 100%;
+	max-width: 500px;
+}
+
+.prompt-meta-field textarea {
+	min-height: 80px;
+	resize: vertical;
+}
+
+/* NSFW Monitor Page */
+.reblur-btn {
+	margin-right: 10px;
+}
+
+.reblur-status {
+	font-weight: bold;
+}
+
+/* Frontend Styles */
+.prompt-content {
+	margin: 20px 0;
+}
+
+.prompt-meta {
+	background: #f9f9f9;
+	padding: 15px;
+	border-radius: 5px;
+	margin: 15px 0;
+}
+
+.prompt-meta h4 {
+	margin-top: 0;
+	color: #333;
+}
+
+.prompt-meta-item {
+	margin-bottom: 10px;
+}
+
+.prompt-meta-label {
+	font-weight: bold;
+	display: inline-block;
+	min-width: 120px;
+}
+
+.prompt-taxonomies {
+	margin: 15px 0;
+}
+
+.prompt-taxonomy {
+	display: inline-block;
+	background: #e0e0e0;
+	padding: 3px 8px;
+	margin: 2px;
+	border-radius: 3px;
+	font-size: 12px;
+}
+
+.nsfw-warning {
+	background: #ffebee;
+	border: 1px solid #f44336;
+	color: #c62828;
+	padding: 15px;
+	border-radius: 5px;
+	margin: 15px 0;
+}
+
+.blurred-image {
+	filter: blur(10px);
+	transition: filter 0.3s ease;
+}
+
+.blurred-image:hover {
+	filter: blur(5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.prompt-meta-field input,
+	.prompt-meta-field textarea {
+		max-width: 100%;
+	}
+
+	.prompt-meta-label {
+		min-width: auto;
+		display: block;
+		margin-bottom: 5px;
+	}
+}
+
+/* Admin Styles */
+.prompt-admin-notice {
+	background: #fff;
+	border-left: 4px solid #00a0d2;
+	padding: 12px;
+	margin: 15px 0;
+}
+
+.prompt-admin-notice.error {
+	border-left-color: #dc3232;
+}
+
+.prompt-admin-notice.success {
+	border-left-color: #46b450;
+}
+
+/* Meta Box Styles */
+#prompt_meta_fields .form-table th {
+	width: 150px;
+	padding-left: 0;
+}
+
+#prompt_meta_fields .form-table td {
+	padding-left: 10px;
+}
+
+#prompt_nsfw {
+	text-align: center;
+}
+
+#prompt_nsfw p {
+	margin: 10px 0;
+}
+
+/* Loading States */
+.loading {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.spinner {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	border: 2px solid #f3f3f3;
+	border-top: 2px solid #3498db;
+	border-radius: 50%;
+	animation: spin 1s linear infinite;
+	margin-left: 5px;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+/* WebP Image Support Indicators */
+.webp-support-indicator {
+	display: inline-block;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 11px;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+.webp-supported {
+	background: #d4edda;
+	color: #155724;
+}
+
+.webp-not-supported {
+	background: #f8d7da;
+	color: #721c24;
+}
+
+/* Image type indicators in admin */
+.image-type-badge {
+	display: inline-block;
+	background: #007cba;
+	color: white;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-left: 5px;
+}
+
+.image-type-webp {
+	background: #28a745;
+}
+
+.image-type-jpg {
+	background: #ffc107;
+	color: #212529;
+}
+
+.image-type-png {
+	background: #17a2b8;
+}
+
+/* Blur quality indicators */
+.blur-quality-indicator {
+	font-size: 12px;
+	margin-left: 10px;
+}
+
+.blur-quality-high::before {
+	content: "🔵 ";
+}
+
+.blur-quality-medium::before {
+	content: "🟡 ";
+}
+
+.blur-quality-low::before {
+	content: "🔴 ";
+}
+
+/* Maximum Blur Styles for NSFW Content */
+.nsfw-blurred-image {
+	filter: blur(20px) brightness(0.8);
+	transition: none !important;
+	user-select: none;
+	pointer-events: none;
+}
+
+/* Prevent any hover effects on blurred images */
+.nsfw-blurred-image:hover {
+	filter: blur(20px) brightness(0.8) !important;
+}
+
+/* NSFW Content Warning */
+.nsfw-content-warning {
+	background: #ffebee;
+	border: 2px solid #f44336;
+	color: #c62828;
+	padding: 20px;
+	border-radius: 8px;
+	margin: 20px 0;
+	text-align: center;
+	font-weight: bold;
+}
+
+.nsfw-login-prompt {
+	background: #e3f2fd;
+	border: 2px solid #2196f3;
+	color: #1565c0;
+	padding: 15px;
+	border-radius: 5px;
+	margin: 15px 0;
+	text-align: center;
+}
+
+.nsfw-login-button {
+	display: inline-block;
+	background: #2196f3;
+	color: white;
+	padding: 10px 20px;
+	text-decoration: none;
+	border-radius: 5px;
+	margin-top: 10px;
+	font-weight: bold;
+}
+
+.nsfw-login-button:hover {
+	background: #1976d2;
+	color: white;
+	text-decoration: none;
+}
+
+/* Blur intensity indicators */
+.blur-level-maximum {
+	position: relative;
+}
+
+.blur-level-maximum::after {
+	content: "🔒 NSFW - Login Required";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+	padding: 10px 15px;
+	border-radius: 5px;
+	font-size: 14px;
+	font-weight: bold;
+	pointer-events: none;
+	z-index: 10;
+}
+
+/* Gallery styles for NSFW content */
+.nsfw-gallery-item {
+	position: relative;
+	display: inline-block;
+}
+
+.nsfw-gallery-item .nsfw-blurred-image {
+	width: 100%;
+	height: auto;
+}
+
+/* Admin preview styles */
+.admin-blur-preview {
+	border: 3px dashed #f44336;
+	padding: 10px;
+	margin: 10px 0;
+}
+
+.admin-blur-preview::before {
+	content: "NSFW Preview (Maximum Blur Applied)";
+	display: block;
+	background: #f44336;
+	color: white;
+	padding: 5px 10px;
+	margin: -10px -10px 10px -10px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+/* Mobile responsive blur */
+@media (max-width: 768px) {
+	.blur-level-maximum::after {
+		font-size: 12px;
+		padding: 8px 12px;
+	}
+
+	.nsfw-content-warning {
+		padding: 15px;
+		margin: 15px 0;
+	}
+}
+
+/* Accessibility improvements */
+.nsfw-blurred-image[alt]::before {
+	content: "🔒 " attr(alt) " (NSFW - Login Required)";
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0, 0, 0, 0.9);
+	color: white;
+	padding: 5px;
+	font-size: 12px;
+	text-align: center;
+	z-index: 5;
+}
+
+/* Print styles - hide NSFW content in print */
+@media print {
+	.nsfw-blurred-image {
+		display: none;
+	}
+
+	.nsfw-blurred-image::after {
+		content: "[NSFW Content Hidden]";
+		display: block;
+		text-align: center;
+		padding: 20px;
+		border: 2px solid #ccc;
+		background: #f5f5f5;
+	}
+}
+
+/* Enhanced NSFW Modal Styles - Proper Centering */
+.nsfw-modal {
+	display: none;
+	position: fixed !important;
+	top: 0 !important;
+	left: 0 !important;
+	width: 100vw !important;
+	height: 100vh !important;
+	z-index: 999999 !important;
+	align-items: center !important;
+	justify-content: center !important;
+	background: rgba(0, 0, 0, 0.95) !important;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.nsfw-modal.active {
+	display: flex !important;
+}
+
+.nsfw-modal-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.95);
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.nsfw-modal-content {
+	position: relative !important;
+	background: white !important;
+	border-radius: 15px !important;
+	max-width: 500px !important;
+	width: 90% !important;
+	max-height: 90vh !important;
+	overflow-y: auto !important;
+	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
+	z-index: 1000000 !important;
+	animation: modalSlideIn 0.3s ease-out !important;
+	margin: 0 !important;
+	transform: none !important;
+}
+
+@keyframes modalSlideIn {
+	from {
+		opacity: 0;
+		transform: scale(0.8) translateY(-50px);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) translateY(0);
+	}
+}
+
+.nsfw-modal-header {
+	padding: 30px 30px 20px !important;
+	text-align: center !important;
+	border-bottom: 2px solid #f0f0f0 !important;
+}
+
+.nsfw-modal-header h2 {
+	margin: 0 !important;
+	color: #dc3232 !important;
+	font-size: 28px !important;
+	font-weight: bold !important;
+}
+
+.nsfw-modal-body {
+	padding: 30px !important;
+	text-align: center !important;
+	color: #333 !important;
+	line-height: 1.8 !important;
+	font-size: 16px !important;
+}
+
+.nsfw-modal-body p {
+	margin-bottom: 15px !important;
+}
+
+.nsfw-modal-body strong {
+	color: #dc3232 !important;
+}
+
+.nsfw-modal-footer {
+	padding: 20px 30px 30px !important;
+	text-align: center !important;
+	display: flex !important;
+	gap: 15px !important;
+	justify-content: center !important;
+	border-top: 2px solid #f0f0f0 !important;
+}
+
+.nsfw-modal-login-btn {
+	background: linear-gradient(135deg, #0073aa, #005a87) !important;
+	color: white !important;
+	padding: 15px 30px !important;
+	text-decoration: none !important;
+	border-radius: 8px !important;
+	font-weight: bold !important;
+	font-size: 16px !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 4px 15px rgba(0, 115, 170, 0.3) !important;
+	border: none !important;
+	cursor: pointer !important;
+}
+
+.nsfw-modal-login-btn:hover {
+	background: linear-gradient(135deg, #005a87, #004a73) !important;
+	color: white !important;
+	text-decoration: none !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 20px rgba(0, 115, 170, 0.4) !important;
+}
+
+.nsfw-modal-close-btn {
+	background: #666 !important;
+	color: white !important;
+	padding: 15px 30px !important;
+	border: none !important;
+	border-radius: 8px !important;
+	cursor: pointer !important;
+	font-weight: bold !important;
+	font-size: 16px !important;
+	transition: all 0.3s ease !important;
+	box-shadow: 0 4px 15px rgba(102, 102, 102, 0.3) !important;
+}
+
+.nsfw-modal-close-btn:hover {
+	background: #555 !important;
+	transform: translateY(-2px) !important;
+	box-shadow: 0 6px 20px rgba(102, 102, 102, 0.4) !important;
+}
+
+/* Force modal to stay on top of everything */
+.nsfw-modal {
+	z-index: 2147483647 !important; /* Maximum z-index value */
+}
+
+.nsfw-modal-content {
+	z-index: 2147483647 !important;
+}
+
+/* Ensure modal appears above all theme elements */
+.nsfw-modal * {
+	box-sizing: border-box !important;
+}
+
+/* Mobile responsive modal */
+@media (max-width: 768px) {
+	.nsfw-modal-content {
+		margin: 20px !important;
+		width: calc(100% - 40px) !important;
+		max-width: none !important;
+	}
+
+	.nsfw-modal-header {
+		padding: 20px 20px 15px !important;
+	}
+
+	.nsfw-modal-header h2 {
+		font-size: 24px !important;
+	}
+
+	.nsfw-modal-body {
+		padding: 20px !important;
+		font-size: 14px !important;
+	}
+
+	.nsfw-modal-footer {
+		flex-direction: column !important;
+		padding: 15px 20px 20px !important;
+	}
+
+	.nsfw-modal-login-btn,
+	.nsfw-modal-close-btn {
+		padding: 12px 20px !important;
+		font-size: 14px !important;
+	}
+}
+
+/* Prevent any theme interference */
+.nsfw-modal,
+.nsfw-modal *,
+.nsfw-modal *::before,
+.nsfw-modal *::after {
+	box-sizing: border-box !important;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+}

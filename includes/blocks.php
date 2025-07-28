@@ -1,0 +1,497 @@
+<?php
+/**
+ * WordPress Blocks for Prompt Manager
+ * Adds Gutenberg blocks support for modern WordPress themes
+ */
+
+if (!defined('ABSPATH')) {
+    exit;
+}
+
+class PromptManagerBlocks {
+    
+    public function __construct() {
+        add_action('init', array($this, 'register_blocks'));
+        add_action('enqueue_block_editor_assets', array($this, 'enqueue_block_editor_assets'));
+        add_action('enqueue_block_assets', array($this, 'enqueue_block_assets'));
+    }
+    
+    /**
+     * Initialize blocks
+     */
+    public function init() {
+        // Register block categories
+        add_filter('block_categories_all', array($this, 'add_block_category'), 10, 2);
+    }
+    
+    /**
+     * Add Prompt Manager block category
+     */
+    public function add_block_category($categories, $post) {
+        return array_merge(
+            $categories,
+            array(
+                array(
+                    'slug'  => 'prompt-manager',
+                    'title' => __('Prompt Manager', 'prompt-manager'),
+                    'icon'  => 'lightbulb',
+                ),
+            )
+        );
+    }
+    
+    /**
+     * Register all blocks
+     */
+    public function register_blocks() {
+        // Check if block editor is available
+        if (!function_exists('register_block_type')) {
+            return;
+        }
+        
+        // Register Prompt Display Block
+        register_block_type('prompt-manager/prompt-display', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'promptId' => array(
+                    'type' => 'number',
+                    'default' => 0,
+                ),
+                'showTitle' => array(
+                    'type' => 'boolean',
+                    'default' => true,
+                ),
+                'showExcerpt' => array(
+                    'type' => 'boolean',
+                    'default' => true,
+                ),
+                'showImage' => array(
+                    'type' => 'boolean',
+                    'default' => true,
+                ),
+                'imageSize' => array(
+                    'type' => 'string',
+                    'default' => 'medium',
+                ),
+                'alignment' => array(
+                    'type' => 'string',
+                    'default' => 'none',
+                ),
+            ),
+            'render_callback' => array($this, 'render_prompt_display_block'),
+        ));
+        
+        // Register Prompt Gallery Block
+        register_block_type('prompt-manager/prompt-gallery', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'numberOfPosts' => array(
+                    'type' => 'number',
+                    'default' => 6,
+                ),
+                'columns' => array(
+                    'type' => 'number',
+                    'default' => 3,
+                ),
+                'showNSFW' => array(
+                    'type' => 'boolean',
+                    'default' => false,
+                ),
+                'orderBy' => array(
+                    'type' => 'string',
+                    'default' => 'date',
+                ),
+                'order' => array(
+                    'type' => 'string',
+                    'default' => 'DESC',
+                ),
+                'category' => array(
+                    'type' => 'string',
+                    'default' => '',
+                ),
+            ),
+            'render_callback' => array($this, 'render_prompt_gallery_block'),
+        ));
+        
+        // Register NSFW Warning Block
+        register_block_type('prompt-manager/nsfw-warning', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'warningText' => array(
+                    'type' => 'string',
+                    'default' => __('This content contains NSFW material. You must be logged in to view it.', 'prompt-manager'),
+                ),
+                'buttonText' => array(
+                    'type' => 'string',
+                    'default' => __('Login to View', 'prompt-manager'),
+                ),
+                'backgroundColor' => array(
+                    'type' => 'string',
+                    'default' => '#fef2f2',
+                ),
+                'textColor' => array(
+                    'type' => 'string',
+                    'default' => '#dc2626',
+                ),
+            ),
+            'render_callback' => array($this, 'render_nsfw_warning_block'),
+        ));
+        
+        // Register Protected Image Block
+        register_block_type('prompt-manager/protected-image', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'imageId' => array(
+                    'type' => 'number',
+                    'default' => 0,
+                ),
+                'imageUrl' => array(
+                    'type' => 'string',
+                    'default' => '',
+                ),
+                'alt' => array(
+                    'type' => 'string',
+                    'default' => '',
+                ),
+                'caption' => array(
+                    'type' => 'string',
+                    'default' => '',
+                ),
+                'size' => array(
+                    'type' => 'string',
+                    'default' => 'large',
+                ),
+                'blurIntensity' => array(
+                    'type' => 'number',
+                    'default' => 15,
+                ),
+                'requireLogin' => array(
+                    'type' => 'boolean',
+                    'default' => true,
+                ),
+            ),
+            'render_callback' => array($this, 'render_protected_image_block'),
+        ));
+    }
+    
+    /**
+     * Enqueue block editor assets
+     */
+    public function enqueue_block_editor_assets() {
+        wp_enqueue_script(
+            'prompt-manager-blocks',
+            PROMPT_MANAGER_PLUGIN_URL . 'assets/js/blocks.js',
+            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n'),
+            PROMPT_MANAGER_VERSION
+        );
+        
+        wp_enqueue_style(
+            'prompt-manager-blocks-editor',
+            PROMPT_MANAGER_PLUGIN_URL . 'assets/css/blocks-editor.css',
+            array('wp-edit-blocks'),
+            PROMPT_MANAGER_VERSION
+        );
+        
+        // Localize script with data
+        wp_localize_script('prompt-manager-blocks', 'promptManagerBlocks', array(
+            'apiUrl' => rest_url('wp/v2/'),
+            'nonce' => wp_create_nonce('wp_rest'),
+            'prompts' => $this->get_prompts_for_blocks(),
+            'imageSizes' => $this->get_image_sizes(),
+        ));
+    }
+    
+    /**
+     * Enqueue block assets for frontend
+     */
+    public function enqueue_block_assets() {
+        wp_enqueue_style(
+            'prompt-manager-blocks',
+            PROMPT_MANAGER_PLUGIN_URL . 'assets/css/blocks.css',
+            array(),
+            PROMPT_MANAGER_VERSION
+        );
+    }
+    
+    /**
+     * Get prompts for block selector
+     */
+    private function get_prompts_for_blocks() {
+        $prompts = get_posts(array(
+            'post_type' => 'prompt',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'orderby' => 'title',
+            'order' => 'ASC'
+        ));
+        
+        $prompt_options = array();
+        foreach ($prompts as $prompt) {
+            $prompt_options[] = array(
+                'value' => $prompt->ID,
+                'label' => $prompt->post_title
+            );
+        }
+        
+        return $prompt_options;
+    }
+    
+    /**
+     * Get available image sizes
+     */
+    private function get_image_sizes() {
+        $sizes = get_intermediate_image_sizes();
+        $sizes[] = 'full';
+        
+        $size_options = array();
+        foreach ($sizes as $size) {
+            $size_options[] = array(
+                'value' => $size,
+                'label' => ucfirst(str_replace('_', ' ', $size))
+            );
+        }
+        
+        return $size_options;
+    }
+    
+    /**
+     * Render Prompt Display Block
+     */
+    public function render_prompt_display_block($attributes) {
+        $prompt_id = intval($attributes['promptId']);
+        
+        if (!$prompt_id) {
+            return '<p>' . __('Please select a prompt to display.', 'prompt-manager') . '</p>';
+        }
+        
+        $prompt = get_post($prompt_id);
+        if (!$prompt || $prompt->post_type !== 'prompt') {
+            return '<p>' . __('Prompt not found.', 'prompt-manager') . '</p>';
+        }
+        
+        // Check NSFW protection
+        $is_nsfw = get_post_meta($prompt_id, '_nsfw', true);
+        if ($is_nsfw && !is_user_logged_in()) {
+            return $this->render_nsfw_protection($prompt_id);
+        }
+        
+        $output = '<div class="wp-block-prompt-manager-prompt-display">';
+        
+        // Add alignment class
+        if ($attributes['alignment'] !== 'none') {
+            $output = '<div class="wp-block-prompt-manager-prompt-display align' . esc_attr($attributes['alignment']) . '">';
+        }
+        
+        // Show image
+        if ($attributes['showImage'] && has_post_thumbnail($prompt_id)) {
+            $image_size = $attributes['imageSize'];
+            $image_html = get_the_post_thumbnail($prompt_id, $image_size, array('class' => 'prompt-display-image'));
+            
+            // Apply protection if NSFW
+            if ($is_nsfw) {
+                $image_html = $this->apply_image_protection($image_html, $prompt_id);
+            }
+            
+            $output .= '<div class="prompt-display-image-container">' . $image_html . '</div>';
+        }
+        
+        // Show title
+        if ($attributes['showTitle']) {
+            $output .= '<h3 class="prompt-display-title">' . esc_html($prompt->post_title) . '</h3>';
+        }
+        
+        // Show excerpt
+        if ($attributes['showExcerpt']) {
+            $excerpt = $prompt->post_excerpt ? $prompt->post_excerpt : wp_trim_words($prompt->post_content, 30);
+            $output .= '<div class="prompt-display-excerpt">' . esc_html($excerpt) . '</div>';
+        }
+        
+        $output .= '</div>';
+        
+        return $output;
+    }
+    
+    /**
+     * Render Prompt Gallery Block
+     */
+    public function render_prompt_gallery_block($attributes) {
+        $args = array(
+            'post_type' => 'prompt',
+            'posts_per_page' => intval($attributes['numberOfPosts']),
+            'post_status' => 'publish',
+            'orderby' => $attributes['orderBy'],
+            'order' => $attributes['order']
+        );
+        
+        // Filter NSFW content if not showing it
+        if (!$attributes['showNSFW'] && !is_user_logged_in()) {
+            $args['meta_query'] = array(
+                array(
+                    'key' => '_nsfw',
+                    'compare' => 'NOT EXISTS'
+                )
+            );
+        }
+        
+        // Add category filter if specified
+        if (!empty($attributes['category'])) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'prompt_category',
+                    'field' => 'slug',
+                    'terms' => $attributes['category']
+                )
+            );
+        }
+        
+        $prompts = get_posts($args);
+        
+        if (empty($prompts)) {
+            return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
+        }
+        
+        $columns = intval($attributes['columns']);
+        $output = '<div class="wp-block-prompt-manager-prompt-gallery columns-' . $columns . '">';
+        
+        foreach ($prompts as $prompt) {
+            $is_nsfw = get_post_meta($prompt->ID, '_nsfw', true);
+            
+            $output .= '<div class="prompt-gallery-item">';
+            
+            if (has_post_thumbnail($prompt->ID)) {
+                $image_html = get_the_post_thumbnail($prompt->ID, 'medium', array('class' => 'prompt-gallery-image'));
+                
+                // Apply protection if NSFW
+                if ($is_nsfw && !is_user_logged_in()) {
+                    $image_html = $this->apply_image_protection($image_html, $prompt->ID);
+                }
+                
+                $output .= '<div class="prompt-gallery-image-container">' . $image_html . '</div>';
+            }
+            
+            $output .= '<h4 class="prompt-gallery-title"><a href="' . get_permalink($prompt->ID) . '">' . esc_html($prompt->post_title) . '</a></h4>';
+            
+            $excerpt = $prompt->post_excerpt ? $prompt->post_excerpt : wp_trim_words($prompt->post_content, 20);
+            $output .= '<div class="prompt-gallery-excerpt">' . esc_html($excerpt) . '</div>';
+            
+            $output .= '</div>';
+        }
+        
+        $output .= '</div>';
+        
+        return $output;
+    }
+    
+    /**
+     * Render NSFW Warning Block
+     */
+    public function render_nsfw_warning_block($attributes) {
+        $warning_text = esc_html($attributes['warningText']);
+        $button_text = esc_html($attributes['buttonText']);
+        $bg_color = esc_attr($attributes['backgroundColor']);
+        $text_color = esc_attr($attributes['textColor']);
+        $login_url = wp_login_url(get_permalink());
+        
+        $style = 'background-color: ' . $bg_color . '; color: ' . $text_color . ';';
+        
+        return '<div class="wp-block-prompt-manager-nsfw-warning" style="' . $style . '">
+            <div class="nsfw-warning-content">
+                <p class="nsfw-warning-text">' . $warning_text . '</p>
+                <a href="' . esc_url($login_url) . '" class="nsfw-warning-button">' . $button_text . '</a>
+            </div>
+        </div>';
+    }
+    
+    /**
+     * Render Protected Image Block
+     */
+    public function render_protected_image_block($attributes) {
+        $image_id = intval($attributes['imageId']);
+        
+        if (!$image_id) {
+            return '<p>' . __('Please select an image.', 'prompt-manager') . '</p>';
+        }
+        
+        $image = get_post($image_id);
+        if (!$image || $image->post_type !== 'attachment') {
+            return '<p>' . __('Image not found.', 'prompt-manager') . '</p>';
+        }
+        
+        $require_login = $attributes['requireLogin'];
+        $blur_intensity = intval($attributes['blurIntensity']);
+        $size = $attributes['size'];
+        $alt = $attributes['alt'] ?: get_post_meta($image_id, '_wp_attachment_image_alt', true);
+        $caption = $attributes['caption'] ?: $image->post_excerpt;
+        
+        // Check if protection is needed
+        if ($require_login && !is_user_logged_in()) {
+            global $post;
+            $post_id = $post ? $post->ID : 0;
+            
+            // Generate protected URL
+            $protected_url = home_url() . '?prompt_image=' . $image_id . '&post_id=' . $post_id . '&nonce=' . wp_create_nonce('prompt_image_' . $image_id);
+            
+            $image_html = '<img src="' . esc_url($protected_url) . '" alt="' . esc_attr($alt) . '" class="wp-image-' . $image_id . ' size-' . esc_attr($size) . ' protected-image blur-' . $blur_intensity . '">';
+        } else {
+            $image_html = wp_get_attachment_image($image_id, $size, false, array(
+                'alt' => $alt,
+                'class' => 'wp-image-' . $image_id
+            ));
+        }
+        
+        $output = '<figure class="wp-block-prompt-manager-protected-image">';
+        $output .= $image_html;
+        
+        if ($caption) {
+            $output .= '<figcaption>' . esc_html($caption) . '</figcaption>';
+        }
+        
+        $output .= '</figure>';
+        
+        return $output;
+    }
+    
+    /**
+     * Apply image protection for NSFW content
+     */
+    private function apply_image_protection($image_html, $post_id) {
+        // Add blur class and modify src to use protected URL
+        $blur_intensity = get_post_meta($post_id, '_blur_intensity', true) ?: 15;
+        
+        // Extract image ID from HTML
+        preg_match('/wp-image-(\d+)/', $image_html, $matches);
+        if (isset($matches[1])) {
+            $image_id = $matches[1];
+            $protected_url = home_url() . '?prompt_image=' . $image_id . '&post_id=' . $post_id . '&nonce=' . wp_create_nonce('prompt_image_' . $image_id);
+            
+            // Replace src with protected URL and add blur class
+            $image_html = preg_replace('/src="[^"]*"/', 'src="' . esc_url($protected_url) . '"', $image_html);
+            $image_html = preg_replace('/class="([^"]*)"/', 'class="$1 protected-image blur-' . $blur_intensity . '"', $image_html);
+        }
+        
+        return $image_html;
+    }
+    
+    /**
+     * Render NSFW protection message
+     */
+    private function render_nsfw_protection($post_id) {
+        $login_url = wp_login_url(get_permalink($post_id));
+        
+        return '<div class="wp-block-prompt-manager-nsfw-protection">
+            <div class="nsfw-protection-message">
+                <h3>' . __('NSFW Content - Login Required', 'prompt-manager') . '</h3>
+                <p>' . __('This content contains NSFW material and requires login to view.', 'prompt-manager') . '</p>
+                <a href="' . esc_url($login_url) . '" class="nsfw-login-button">' . __('Login to View Content', 'prompt-manager') . '</a>
+            </div>
+        </div>';
+    }
+}

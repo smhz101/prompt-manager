@@ -1,0 +1,16 @@
+{
+  "name": "prompt-manager",
+  "version": "1.0.0",
+  "description": "A comprehensive WordPress plugin for managing, publishing, and protecting AI-generated prompts with advanced NSFW content protection.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "wp-scripts start",
+    "build": "wp-scripts build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@wordpress/scripts": "^30.20.0"
+  }
+}
