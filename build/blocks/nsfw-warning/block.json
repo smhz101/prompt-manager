@@ -1,0 +1,28 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/nsfw-warning",
+  "title": "NSFW Warning",
+  "category": "prompt-manager",
+  "icon": "warning",
+  "attributes": {
+    "warningText": {
+      "type": "string",
+      "default": "This content contains NSFW material. You must be logged in to view it."
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Login to View"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "#fef2f2"
+    },
+    "textColor": {
+      "type": "string",
+      "default": "#dc2626"
+    }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}
