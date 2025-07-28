@@ -558,6 +558,7 @@ class PromptManagerBlocks {
         $args = array(
             'post_type'      => 'prompt',
             'posts_per_page' => intval($attributes['postsPerPage']),
+            'offset'         => intval($attributes['offset']),
             'orderby'        => $attributes['orderBy'],
             'order'          => $attributes['order'],
         );
@@ -568,6 +569,15 @@ class PromptManagerBlocks {
                     'taxonomy' => 'prompt_category',
                     'field'    => 'slug',
                     'terms'    => $attributes['category'],
+                ),
+            );
+        }
+
+        if (!$attributes['showNSFW'] && !is_user_logged_in()) {
+            $args['meta_query'] = array(
+                array(
+                    'key'     => '_nsfw',
+                    'compare' => 'NOT EXISTS',
                 ),
             );
         }
