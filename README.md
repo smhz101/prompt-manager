@@ -114,6 +114,20 @@ npm run build
 
 Use `npm start` during development to automatically rebuild when `src/index.js` changes.
 
+### Available Blocks
+
+- Prompt Display
+- Prompt Gallery
+- NSFW Warning
+- Protected Image
+- Prompt Search
+- Analytics Summary
+- Random Prompt
+- Prompt Submission
+- Protected Download
+- Prompt Slider
+- Advance Query
+
 
 ## Usage
 

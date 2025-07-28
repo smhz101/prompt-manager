@@ -484,4 +484,95 @@
       return null; // Rendered by PHP
     },
   });
+
+  // Prompt Search Block
+  registerBlockType('prompt-manager/prompt-search', {
+    title: __('Prompt Search', 'prompt-manager'),
+    icon: 'search',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Prompt Search Block', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Analytics Summary Block
+  registerBlockType('prompt-manager/analytics-summary', {
+    title: __('Analytics Summary', 'prompt-manager'),
+    icon: 'chart-bar',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Analytics Summary', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Random Prompt Block
+  registerBlockType('prompt-manager/random-prompt', {
+    title: __('Random Prompt', 'prompt-manager'),
+    icon: 'randomize',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Random Prompt', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Prompt Submission Block
+  registerBlockType('prompt-manager/prompt-submission', {
+    title: __('Prompt Submission', 'prompt-manager'),
+    icon: 'edit',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Prompt Submission Form', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Protected Download Block
+  registerBlockType('prompt-manager/protected-download', {
+    title: __('Protected Download', 'prompt-manager'),
+    icon: 'download',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Protected Download', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Prompt Slider Block
+  registerBlockType('prompt-manager/prompt-slider', {
+    title: __('Prompt Slider', 'prompt-manager'),
+    icon: 'images-alt2',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Prompt Slider', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
+
+  // Advance Query Block
+  registerBlockType('prompt-manager/advance-query', {
+    title: __('Advance Query', 'prompt-manager'),
+    icon: 'filter',
+    category: 'prompt-manager',
+    edit: function () {
+      return createElement('p', {}, __('Advance Query', 'prompt-manager'));
+    },
+    save: function () {
+      return null;
+    },
+  });
 })();
