@@ -186,11 +186,13 @@ class PromptManagerBlocks {
      * Enqueue block editor assets
      */
     public function enqueue_block_editor_assets() {
+        // Load compiled block script and its dependencies.
+        $asset_file = include PROMPT_MANAGER_PLUGIN_DIR . 'build/blocks.asset.php';
         wp_enqueue_script(
             'prompt-manager-blocks',
-            PROMPT_MANAGER_PLUGIN_URL . 'assets/js/blocks.js',
-            array('wp-blocks', 'wp-element', 'wp-editor', 'wp-components', 'wp-i18n'),
-            PROMPT_MANAGER_VERSION
+            PROMPT_MANAGER_PLUGIN_URL . 'build/blocks.js',
+            $asset_file['dependencies'],
+            $asset_file['version']
         );
         
         wp_enqueue_style(
