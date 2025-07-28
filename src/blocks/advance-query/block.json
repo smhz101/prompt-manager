@@ -1,0 +1,26 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/advance-query",
+  "title": "Advance Query",
+  "category": "prompt-manager",
+  "icon": "filter",
+  "attributes": {
+    "query": {
+      "type": "object",
+      "default": {
+        "perPage": 5,
+        "offset": 0,
+        "postType": "prompt",
+        "orderBy": "date",
+        "order": "DESC",
+        "category": "",
+        "tag": "",
+        "sticky": "include",
+        "inherit": false
+      }
+    }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}

@@ -52,191 +52,27 @@ class PromptManagerBlocks {
             return;
         }
         
-        // Register Prompt Display Block using metadata
-        register_block_type(
-            PROMPT_MANAGER_PLUGIN_DIR . 'src/block.json',
-            array(
-                'render_callback' => array($this, 'render_prompt_display_block'),
-            )
+        // Register all blocks using metadata
+        $blocks = array(
+            'prompt-display'      => 'render_prompt_display_block',
+            'prompt-gallery'      => 'render_prompt_gallery_block',
+            'nsfw-warning'        => 'render_nsfw_warning_block',
+            'protected-image'     => 'render_protected_image_block',
+            'prompt-search'       => 'render_prompt_search_block',
+            'analytics-summary'   => 'render_analytics_summary_block',
+            'random-prompt'       => 'render_random_prompt_block',
+            'prompt-submission'   => 'render_prompt_submission_block',
+            'protected-download'  => 'render_protected_download_block',
+            'prompt-slider'       => 'render_prompt_slider_block',
+            'advance-query'       => 'render_advance_query_block',
         );
-        
-        // Register Prompt Gallery Block
-        register_block_type('prompt-manager/prompt-gallery', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'numberOfPosts' => array(
-                    'type' => 'number',
-                    'default' => 6,
-                ),
-                'columns' => array(
-                    'type' => 'number',
-                    'default' => 3,
-                ),
-                'showNSFW' => array(
-                    'type' => 'boolean',
-                    'default' => false,
-                ),
-                'orderBy' => array(
-                    'type' => 'string',
-                    'default' => 'date',
-                ),
-                'order' => array(
-                    'type' => 'string',
-                    'default' => 'DESC',
-                ),
-                'category' => array(
-                    'type' => 'string',
-                    'default' => '',
-                ),
-            ),
-            'render_callback' => array($this, 'render_prompt_gallery_block'),
-        ));
-        
-        // Register NSFW Warning Block
-        register_block_type('prompt-manager/nsfw-warning', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'warningText' => array(
-                    'type' => 'string',
-                    'default' => __('This content contains NSFW material. You must be logged in to view it.', 'prompt-manager'),
-                ),
-                'buttonText' => array(
-                    'type' => 'string',
-                    'default' => __('Login to View', 'prompt-manager'),
-                ),
-                'backgroundColor' => array(
-                    'type' => 'string',
-                    'default' => '#fef2f2',
-                ),
-                'textColor' => array(
-                    'type' => 'string',
-                    'default' => '#dc2626',
-                ),
-            ),
-            'render_callback' => array($this, 'render_nsfw_warning_block'),
-        ));
-        
-        // Register Protected Image Block
-        register_block_type('prompt-manager/protected-image', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'imageId' => array(
-                    'type' => 'number',
-                    'default' => 0,
-                ),
-                'imageUrl' => array(
-                    'type' => 'string',
-                    'default' => '',
-                ),
-                'alt' => array(
-                    'type' => 'string',
-                    'default' => '',
-                ),
-                'caption' => array(
-                    'type' => 'string',
-                    'default' => '',
-                ),
-                'size' => array(
-                    'type' => 'string',
-                    'default' => 'large',
-                ),
-                'blurIntensity' => array(
-                    'type' => 'number',
-                    'default' => 15,
-                ),
-                'requireLogin' => array(
-                    'type' => 'boolean',
-                    'default' => true,
-                ),
-            ),
-            'render_callback' => array($this, 'render_protected_image_block'),
-        ));
 
-        // Register Prompt Search Block
-        register_block_type('prompt-manager/prompt-search', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'render_callback' => array($this, 'render_prompt_search_block'),
-        ));
-
-        // Register Analytics Summary Block
-        register_block_type('prompt-manager/analytics-summary', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'days' => array(
-                    'type'    => 'number',
-                    'default' => 30,
-                ),
-            ),
-            'render_callback' => array($this, 'render_analytics_summary_block'),
-        ));
-
-        // Register Random Prompt Block
-        register_block_type('prompt-manager/random-prompt', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'showTitle'   => array('type' => 'boolean', 'default' => true),
-                'showExcerpt' => array('type' => 'boolean', 'default' => true),
-                'showImage'   => array('type' => 'boolean', 'default' => true),
-                'imageSize'   => array('type' => 'string', 'default' => 'medium'),
-            ),
-            'render_callback' => array($this, 'render_random_prompt_block'),
-        ));
-
-        // Register Prompt Submission Block
-        register_block_type('prompt-manager/prompt-submission', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'render_callback' => array($this, 'render_prompt_submission_block'),
-        ));
-
-        // Register Protected Download Block
-        register_block_type('prompt-manager/protected-download', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'attachmentId' => array('type' => 'number', 'default' => 0),
-            ),
-            'render_callback' => array($this, 'render_protected_download_block'),
-        ));
-
-        // Register Prompt Slider Block
-        register_block_type('prompt-manager/prompt-slider', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'numberOfPosts' => array('type' => 'number', 'default' => 5),
-                'showNSFW'      => array('type' => 'boolean', 'default' => false),
-            ),
-            'render_callback' => array($this, 'render_prompt_slider_block'),
-        ));
-
-        // Register Advance Query Block
-        register_block_type('prompt-manager/advance-query', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'postsPerPage' => array('type' => 'number', 'default' => 5),
-                'orderBy'      => array('type' => 'string', 'default' => 'date'),
-                'order'        => array('type' => 'string', 'default' => 'DESC'),
-            ),
-            'render_callback' => array($this, 'render_advance_query_block'),
-        ));
+        foreach ($blocks as $slug => $callback) {
+            register_block_type(
+                PROMPT_MANAGER_PLUGIN_DIR . 'src/blocks/' . $slug . '/block.json',
+                array('render_callback' => array($this, $callback))
+            );
+        }
     }
     
     /**
@@ -265,6 +101,8 @@ class PromptManagerBlocks {
             'nonce' => wp_create_nonce('wp_rest'),
             'prompts' => $this->get_prompts_for_blocks(),
             'imageSizes' => $this->get_image_sizes(),
+            'categories' => $this->get_prompt_categories(),
+            'tags'       => $this->get_prompt_tags(),
         ));
     }
     
@@ -319,6 +157,50 @@ class PromptManagerBlocks {
         }
         
         return $size_options;
+    }
+
+    /**
+     * Get prompt categories for selector
+     */
+    private function get_prompt_categories() {
+        $terms = get_terms(array(
+            'taxonomy' => 'prompt_category',
+            'hide_empty' => false,
+        ));
+
+        $options = array();
+        if (!is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                $options[] = array(
+                    'value' => $term->slug,
+                    'label' => $term->name,
+                );
+            }
+        }
+
+        return $options;
+    }
+
+    /**
+     * Get prompt tags for selector
+     */
+    private function get_prompt_tags() {
+        $terms = get_terms(array(
+            'taxonomy' => 'prompt_tag',
+            'hide_empty' => false,
+        ));
+
+        $options = array();
+        if (!is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                $options[] = array(
+                    'value' => $term->slug,
+                    'label' => $term->name,
+                );
+            }
+        }
+
+        return $options;
     }
     
     /**
@@ -695,24 +577,83 @@ class PromptManagerBlocks {
     /**
      * Render Advance Query Block
      */
-    public function render_advance_query_block($attributes) {
+    public function render_advance_query_block($attributes, $content = '') {
+        $query_atts = isset($attributes['query']) ? $attributes['query'] : array();
+
         $args = array(
-            'post_type'      => 'prompt',
-            'posts_per_page' => intval($attributes['postsPerPage']),
-            'orderby'        => $attributes['orderBy'],
-            'order'          => $attributes['order'],
+            'post_type'      => $query_atts['postType'] ?? 'prompt',
+            'posts_per_page' => intval($query_atts['perPage'] ?? 5),
+            'orderby'        => $query_atts['orderBy'] ?? 'date',
+            'order'          => $query_atts['order'] ?? 'DESC',
+            'offset'         => intval($query_atts['offset'] ?? 0),
         );
 
-        $prompts = get_posts($args);
-        if (empty($prompts)) {
+        $tax_query = array();
+
+        if (!empty($query_atts['category'])) {
+            $tax_query[] = array(
+                'taxonomy' => 'prompt_category',
+                'field'    => 'slug',
+                'terms'    => $query_atts['category'],
+            );
+        }
+
+        if (!empty($query_atts['tag'])) {
+            $tax_query[] = array(
+                'taxonomy' => 'prompt_tag',
+                'field'    => 'slug',
+                'terms'    => $query_atts['tag'],
+            );
+        }
+
+        if (!empty($tax_query)) {
+            $args['tax_query'] = $tax_query;
+        }
+
+        if (!empty($query_atts['search'])) {
+            $args['s'] = sanitize_text_field($query_atts['search']);
+        }
+
+        if (!empty($query_atts['author'])) {
+            $args['author'] = intval($query_atts['author']);
+        }
+
+        if (!empty($query_atts['metaKey'])) {
+            $args['meta_query'] = array(
+                array(
+                    'key'     => sanitize_key($query_atts['metaKey']),
+                    'value'   => sanitize_text_field($query_atts['metaValue'] ?? ''),
+                    'compare' => 'LIKE',
+                ),
+            );
+        }
+
+        if (!empty($query_atts['sticky'])) {
+            $sticky_posts = get_option('sticky_posts');
+            if ($query_atts['sticky'] === 'exclude') {
+                $args['post__not_in'] = $sticky_posts;
+            } elseif ($query_atts['sticky'] === 'only') {
+                $args['post__in'] = $sticky_posts;
+                $args['ignore_sticky_posts'] = 0;
+            }
+        }
+
+        if (!empty($query_atts['inherit'])) {
+            $query = $GLOBALS['wp_query'];
+        } else {
+            $query = new WP_Query($args);
+        }
+        if (!$query->have_posts()) {
             return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
         }
 
-        $output = '<ul class="wp-block-prompt-manager-advance-query">';
-        foreach ($prompts as $prompt) {
-            $output .= '<li><a href="' . get_permalink($prompt->ID) . '">' . esc_html($prompt->post_title) . '</a></li>';
+        $output = '<div class="wp-block-prompt-manager-advance-query">';
+        while ($query->have_posts()) {
+            $query->the_post();
+            $output .= '<div class="prompt-query-item">' . do_blocks($content) . '</div>';
         }
-        $output .= '</ul>';
+        wp_reset_postdata();
+        $output .= '</div>';
 
         return $output;
     }
