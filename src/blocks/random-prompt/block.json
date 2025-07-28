@@ -1,0 +1,16 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/random-prompt",
+  "title": "Random Prompt",
+  "category": "prompt-manager",
+  "icon": "randomize",
+  "attributes": {
+    "showTitle": { "type": "boolean", "default": true },
+    "showExcerpt": { "type": "boolean", "default": true },
+    "showImage": { "type": "boolean", "default": true },
+    "imageSize": { "type": "string", "default": "medium" }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}

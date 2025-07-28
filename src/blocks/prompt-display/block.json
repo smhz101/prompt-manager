@@ -1,0 +1,10 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/prompt-display",
+  "title": "Prompt Display",
+  "category": "prompt-manager",
+  "icon": "lightbulb",
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}

@@ -1,0 +1,14 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/prompt-slider",
+  "title": "Prompt Slider",
+  "category": "prompt-manager",
+  "icon": "images-alt2",
+  "attributes": {
+    "numberOfPosts": { "type": "number", "default": 5 },
+    "showNSFW": { "type": "boolean", "default": false }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}
