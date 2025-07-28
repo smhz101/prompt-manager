@@ -88,7 +88,7 @@ Admin interface for managing NSFW content:
 
 ## File Structure
 
-\`\`\`
+```
 prompt-manager/
 ├── prompt-manager.php # Main plugin file
 ├── assets/
@@ -101,7 +101,7 @@ prompt-manager/
 ├── logs/
 │ └── blur.log # Protection activity log
 └── README.md # This file
-\`\`\`
+```
 
 ## Usage
 
@@ -116,7 +116,7 @@ prompt-manager/
 
 Use template functions in your theme:
 
-\`\`\`php
+```php
 // Display protected featured image
 echo prompt_manager_featured_image();
 
@@ -130,16 +130,16 @@ echo prompt_manager_display_gallery();
 if (prompt_manager_can_view_full_content()) {
 // Show full content
 }
-\`\`\`
+```
 
 ### Using Shortcodes
 
-\`\`\`
+```
 [featured_image class="my-class"]
 [protected_image attachment_id="123"]
 [prompt_text]
 [nsfw]
-\`\`\`
+```
 
 ## Security Benefits
 
