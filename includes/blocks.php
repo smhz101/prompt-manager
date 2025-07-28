@@ -14,6 +14,9 @@ class PromptManagerBlocks {
         add_action('init', array($this, 'register_blocks'));
         add_action('enqueue_block_editor_assets', array($this, 'enqueue_block_editor_assets'));
         add_action('enqueue_block_assets', array($this, 'enqueue_block_assets'));
+        add_filter('block_categories_all', array($this, 'add_block_category'), 10, 2);
+        add_action('admin_post_prompt_manager_submit_prompt', array($this, 'handle_prompt_submission'));
+        add_action('admin_post_nopriv_prompt_manager_submit_prompt', array($this, 'handle_prompt_submission'));
     }
     
     /**
@@ -153,6 +156,86 @@ class PromptManagerBlocks {
                 ),
             ),
             'render_callback' => array($this, 'render_protected_image_block'),
+        ));
+
+        // Register Prompt Search Block
+        register_block_type('prompt-manager/prompt-search', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'render_callback' => array($this, 'render_prompt_search_block'),
+        ));
+
+        // Register Analytics Summary Block
+        register_block_type('prompt-manager/analytics-summary', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'days' => array(
+                    'type'    => 'number',
+                    'default' => 30,
+                ),
+            ),
+            'render_callback' => array($this, 'render_analytics_summary_block'),
+        ));
+
+        // Register Random Prompt Block
+        register_block_type('prompt-manager/random-prompt', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'showTitle'   => array('type' => 'boolean', 'default' => true),
+                'showExcerpt' => array('type' => 'boolean', 'default' => true),
+                'showImage'   => array('type' => 'boolean', 'default' => true),
+                'imageSize'   => array('type' => 'string', 'default' => 'medium'),
+            ),
+            'render_callback' => array($this, 'render_random_prompt_block'),
+        ));
+
+        // Register Prompt Submission Block
+        register_block_type('prompt-manager/prompt-submission', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'render_callback' => array($this, 'render_prompt_submission_block'),
+        ));
+
+        // Register Protected Download Block
+        register_block_type('prompt-manager/protected-download', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'attachmentId' => array('type' => 'number', 'default' => 0),
+            ),
+            'render_callback' => array($this, 'render_protected_download_block'),
+        ));
+
+        // Register Prompt Slider Block
+        register_block_type('prompt-manager/prompt-slider', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'numberOfPosts' => array('type' => 'number', 'default' => 5),
+                'showNSFW'      => array('type' => 'boolean', 'default' => false),
+            ),
+            'render_callback' => array($this, 'render_prompt_slider_block'),
+        ));
+
+        // Register Advance Query Block
+        register_block_type('prompt-manager/advance-query', array(
+            'editor_script' => 'prompt-manager-blocks',
+            'editor_style'  => 'prompt-manager-blocks-editor',
+            'style'         => 'prompt-manager-blocks',
+            'attributes'    => array(
+                'postsPerPage' => array('type' => 'number', 'default' => 5),
+                'orderBy'      => array('type' => 'string', 'default' => 'date'),
+                'order'        => array('type' => 'string', 'default' => 'DESC'),
+            ),
+            'render_callback' => array($this, 'render_advance_query_block'),
         ));
     }
     
@@ -461,7 +544,7 @@ class PromptManagerBlocks {
      */
     private function render_nsfw_protection($post_id) {
         $login_url = wp_login_url(get_permalink($post_id));
-        
+
         return '<div class="wp-block-prompt-manager-nsfw-protection">
             <div class="nsfw-protection-message">
                 <h3>' . __('NSFW Content - Login Required', 'prompt-manager') . '</h3>
@@ -469,5 +552,168 @@ class PromptManagerBlocks {
                 <a href="' . esc_url($login_url) . '" class="nsfw-login-button">' . __('Login to View Content', 'prompt-manager') . '</a>
             </div>
         </div>';
+    }
+
+    /**
+     * Render Prompt Search Block
+     */
+    public function render_prompt_search_block() {
+        return '<div class="wp-block-prompt-manager-prompt-search"><input type="text" class="prompt-search-input" placeholder="' . esc_attr__('Search prompts...', 'prompt-manager') . '"/><div class="prompt-search-results"></div></div>';
+    }
+
+    /**
+     * Render Analytics Summary Block
+     */
+    public function render_analytics_summary_block($attributes) {
+        $days = intval($attributes['days']);
+        $analytics = new PromptManagerAnalytics();
+        $total = $analytics->get_total_access_attempts($days);
+        $blocked = $analytics->get_blocked_attempts_today();
+
+        return '<div class="wp-block-prompt-manager-analytics-summary"><p>' . sprintf(__('Total Attempts (last %d days): %d', 'prompt-manager'), $days, $total) . '</p><p>' . sprintf(__('Blocked Attempts Today: %d', 'prompt-manager'), $blocked) . '</p></div>';
+    }
+
+    /**
+     * Render Random Prompt Block
+     */
+    public function render_random_prompt_block($attributes) {
+        $prompt = get_posts(array(
+            'post_type' => 'prompt',
+            'posts_per_page' => 1,
+            'orderby' => 'rand',
+        ));
+
+        if (empty($prompt)) {
+            return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
+        }
+
+        $attributes['promptId'] = $prompt[0]->ID;
+        return $this->render_prompt_display_block($attributes);
+    }
+
+    /**
+     * Render Prompt Submission Block
+     */
+    public function render_prompt_submission_block() {
+        if (!is_user_logged_in()) {
+            return '<p>' . __('You must be logged in to submit a prompt.', 'prompt-manager') . '</p>';
+        }
+
+        $nonce = wp_create_nonce('prompt_submit');
+        $action = esc_url(admin_url('admin-post.php'));
+
+        return '<form class="prompt-submission-form" method="post" action="' . $action . '">
+            <input type="hidden" name="action" value="prompt_manager_submit_prompt" />
+            <input type="hidden" name="_wpnonce" value="' . $nonce . '" />
+            <p><input type="text" name="prompt_title" placeholder="' . esc_attr__('Title', 'prompt-manager') . '" required></p>
+            <p><textarea name="prompt_content" placeholder="' . esc_attr__('Prompt text', 'prompt-manager') . '" required></textarea></p>
+            <p><button type="submit">' . __('Submit', 'prompt-manager') . '</button></p>
+        </form>';
+    }
+
+    /**
+     * Handle prompt submission
+     */
+    public function handle_prompt_submission() {
+        if (!is_user_logged_in()) {
+            wp_die(__('You must be logged in to submit prompts.', 'prompt-manager'));
+        }
+
+        check_admin_referer('prompt_submit');
+
+        $title = sanitize_text_field($_POST['prompt_title'] ?? '');
+        $content = sanitize_textarea_field($_POST['prompt_content'] ?? '');
+
+        if ($title && $content) {
+            wp_insert_post(array(
+                'post_type'   => 'prompt',
+                'post_title'  => $title,
+                'post_content'=> $content,
+                'post_status' => 'pending',
+            ));
+        }
+
+        wp_safe_redirect(wp_get_referer());
+        exit;
+    }
+
+    /**
+     * Render Protected Download Block
+     */
+    public function render_protected_download_block($attributes) {
+        $attachment_id = intval($attributes['attachmentId']);
+        if (!$attachment_id) {
+            return '<p>' . __('No file selected.', 'prompt-manager') . '</p>';
+        }
+
+        $url = wp_get_attachment_url($attachment_id);
+        $title = get_the_title($attachment_id);
+
+        if (!is_user_logged_in()) {
+            $login = wp_login_url($url);
+            return '<a href="' . esc_url($login) . '">' . __('Login to Download', 'prompt-manager') . '</a>';
+        }
+
+        return '<a href="' . esc_url($url) . '" download>' . esc_html($title) . '</a>';
+    }
+
+    /**
+     * Render Prompt Slider Block
+     */
+    public function render_prompt_slider_block($attributes) {
+        $args = array(
+            'post_type'      => 'prompt',
+            'posts_per_page' => intval($attributes['numberOfPosts']),
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        );
+
+        if (!$attributes['showNSFW'] && !is_user_logged_in()) {
+            $args['meta_query'] = array(
+                array(
+                    'key' => '_nsfw',
+                    'compare' => 'NOT EXISTS'
+                )
+            );
+        }
+
+        $prompts = get_posts($args);
+
+        if (empty($prompts)) {
+            return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
+        }
+
+        $output = '<div class="wp-block-prompt-manager-prompt-slider">';
+        foreach ($prompts as $prompt) {
+            $output .= '<div class="prompt-slide"><a href="' . get_permalink($prompt->ID) . '">' . esc_html($prompt->post_title) . '</a></div>';
+        }
+        $output .= '</div>';
+
+        return $output;
+    }
+
+    /**
+     * Render Advance Query Block
+     */
+    public function render_advance_query_block($attributes) {
+        $args = array(
+            'post_type'      => 'prompt',
+            'posts_per_page' => intval($attributes['postsPerPage']),
+            'orderby'        => $attributes['orderBy'],
+            'order'          => $attributes['order'],
+        );
+
+        $prompts = get_posts($args);
+        if (empty($prompts)) {
+            return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
+        }
+
+        $output = '<ul class="wp-block-prompt-manager-advance-query">';
+        foreach ($prompts as $prompt) {
+            $output .= '<li><a href="' . get_permalink($prompt->ID) . '">' . esc_html($prompt->post_title) . '</a></li>';
+        }
+        $output .= '</ul>';
+
+        return $output;
     }
 }
