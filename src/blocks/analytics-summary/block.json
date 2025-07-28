@@ -1,9 +1,12 @@
 {
   "apiVersion": 2,
-  "name": "prompt-manager/prompt-display",
-  "title": "Prompt Display",
+  "name": "prompt-manager/analytics-summary",
+  "title": "Analytics Summary",
   "category": "prompt-manager",
-  "icon": "lightbulb",
+  "icon": "chart-bar",
+  "attributes": {
+    "days": { "type": "number", "default": 30 }
+  },
   "editorScript": "file:../../build/blocks.js",
   "style": "file:../../assets/css/blocks.css",
   "editorStyle": "file:../../assets/css/blocks-editor.css"

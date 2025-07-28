@@ -1,9 +1,9 @@
 {
   "apiVersion": 2,
-  "name": "prompt-manager/prompt-display",
-  "title": "Prompt Display",
+  "name": "prompt-manager/prompt-submission",
+  "title": "Prompt Submission",
   "category": "prompt-manager",
-  "icon": "lightbulb",
+  "icon": "edit",
   "editorScript": "file:../../build/blocks.js",
   "style": "file:../../assets/css/blocks.css",
   "editorStyle": "file:../../assets/css/blocks-editor.css"
