@@ -552,7 +552,7 @@ class PromptManagerBlocks {
     }
 
     /**
-     * Render Advance Query Block
+     * Render Advanced Query Block
      */
     public function render_advance_query_block($attributes, $content = '') {
         $args = array(
