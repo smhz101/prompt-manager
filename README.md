@@ -103,6 +103,18 @@ prompt-manager/
 └── README.md # This file
 ```
 
+## Block Development
+
+This plugin's Gutenberg blocks are built using `@wordpress/scripts`. To compile the block assets, run:
+
+```bash
+npm install
+npm run build
+```
+
+Use `npm start` during development to automatically rebuild when `src/index.js` changes.
+
+
 ## Usage
 
 ### Creating Protected Prompts
