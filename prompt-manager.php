@@ -60,7 +60,6 @@ class PromptManager {
         add_action('wp_ajax_reset_prompt_settings', array($this, 'ajax_reset_prompt_settings'));
         add_action('wp_ajax_get_blur_status', array($this, 'ajax_get_blur_status'));
         add_action('wp_ajax_stop_blur_processing', array($this, 'ajax_stop_blur_processing'));
-        add_action('wp_ajax_save_prompt_settings', array($this, 'ajax_save_prompt_settings'));
         add_action('wp_ajax_process_blur_batch', array($this, 'ajax_process_blur_batch'));
         add_action('wp_ajax_get_analytics_data', array($this, 'ajax_get_analytics_data'));
         

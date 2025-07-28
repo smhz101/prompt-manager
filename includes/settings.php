@@ -53,7 +53,9 @@ class PromptManagerSettings {
             'enable_real_time_protection' => true,
             'protection_level' => 'maximum',
             'modal_blur_intensity' => 25,
-            'content_blur_intensity' => 20
+            'content_blur_intensity' => 20,
+            'debug_mode' => false,
+            'performance_mode' => 'balanced'
         );
         
         $existing_options = get_option($this->option_name, array());
