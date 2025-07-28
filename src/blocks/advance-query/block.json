@@ -1,7 +1,7 @@
 {
   "apiVersion": 2,
   "name": "prompt-manager/advance-query",
-  "title": "Advance Query",
+  "title": "Advanced Query",
   "category": "prompt-manager",
   "icon": "filter",
   "attributes": {

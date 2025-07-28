@@ -9,9 +9,36 @@ import {
 import { PanelBody, SelectControl, RangeControl, ToggleControl } from '@wordpress/components';
 
 registerBlockType('prompt-manager/advance-query', {
-  title: __('Advance Query', 'prompt-manager'),
+  title: __('Advanced Query', 'prompt-manager'),
   icon: 'filter',
   category: 'prompt-manager',
+  example: {
+    viewportWidth: 650,
+    attributes: {
+      postsPerPage: 4,
+      offset: 0,
+      orderBy: 'date',
+      order: 'DESC',
+      category: '',
+      showNSFW: false,
+    },
+    innerBlocks: [
+      {
+        name: 'core/post-template',
+        attributes: {
+          layout: {
+            type: 'grid',
+            columnCount: 2,
+          },
+        },
+        innerBlocks: [
+          { name: 'core/post-title' },
+          { name: 'core/post-date' },
+          { name: 'core/post-excerpt' },
+        ],
+      },
+    ],
+  },
   attributes: {
     postsPerPage: { type: 'number', default: 5 },
     offset: { type: 'number', default: 0 },
