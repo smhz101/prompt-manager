@@ -54,7 +54,7 @@ class PromptManagerBlocks {
         
         // Register Prompt Display Block using metadata
         register_block_type(
-            PROMPT_MANAGER_PLUGIN_DIR . 'src/block.json',
+            PROMPT_MANAGER_PLUGIN_DIR . 'src/blocks/prompt-display/block.json',
             array(
                 'render_callback' => array($this, 'render_prompt_display_block'),
             )
