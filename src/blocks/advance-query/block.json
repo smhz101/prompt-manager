@@ -7,7 +7,8 @@
   "attributes": {
     "postsPerPage": { "type": "number", "default": 5 },
     "orderBy": { "type": "string", "default": "date" },
-    "order": { "type": "string", "default": "DESC" }
+    "order": { "type": "string", "default": "DESC" },
+    "category": { "type": "string", "default": "" }
   },
   "editorScript": "file:../../build/blocks.js",
   "style": "file:../../assets/css/blocks.css",

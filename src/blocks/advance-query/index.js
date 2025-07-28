@@ -1,7 +1,11 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { createElement, Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+  InspectorControls,
+  useBlockProps,
+  InnerBlocks,
+} from '@wordpress/block-editor';
 import { PanelBody, SelectControl, RangeControl } from '@wordpress/components';
 
 registerBlockType('prompt-manager/advance-query', {
@@ -12,12 +16,26 @@ registerBlockType('prompt-manager/advance-query', {
     postsPerPage: { type: 'number', default: 5 },
     orderBy: { type: 'string', default: 'date' },
     order: { type: 'string', default: 'DESC' },
+    category: { type: 'string', default: '' },
   },
   edit: ({ attributes, setAttributes }) => {
+    const blockProps = useBlockProps();
     return createElement(
       Fragment,
       {},
-      createElement('div', useBlockProps(), __('Advance Query', 'prompt-manager')),
+      createElement(
+        'div',
+        blockProps,
+        createElement(InnerBlocks, {
+          orientation: 'vertical',
+          template: [
+            ['core/post-featured-image'],
+            ['core/post-title'],
+            ['core/post-excerpt'],
+          ],
+          templateLock: false,
+        })
+      ),
       createElement(
         InspectorControls,
         {},
@@ -50,6 +68,15 @@ registerBlockType('prompt-manager/advance-query', {
               { value: 'ASC', label: __('Ascending', 'prompt-manager') },
             ],
             onChange: (value) => setAttributes({ order: value }),
+          }),
+          createElement(SelectControl, {
+            label: __('Category', 'prompt-manager'),
+            value: attributes.category,
+            options: [
+              { value: '', label: __('All', 'prompt-manager') },
+              ...(promptManagerBlocks.categories || []),
+            ],
+            onChange: (value) => setAttributes({ category: value }),
           })
         )
       )

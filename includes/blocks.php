@@ -101,6 +101,7 @@ class PromptManagerBlocks {
             'nonce' => wp_create_nonce('wp_rest'),
             'prompts' => $this->get_prompts_for_blocks(),
             'imageSizes' => $this->get_image_sizes(),
+            'categories' => $this->get_prompt_categories(),
         ));
     }
     
@@ -155,6 +156,28 @@ class PromptManagerBlocks {
         }
         
         return $size_options;
+    }
+
+    /**
+     * Get prompt categories for selector
+     */
+    private function get_prompt_categories() {
+        $terms = get_terms(array(
+            'taxonomy' => 'prompt_category',
+            'hide_empty' => false,
+        ));
+
+        $options = array();
+        if (!is_wp_error($terms)) {
+            foreach ($terms as $term) {
+                $options[] = array(
+                    'value' => $term->slug,
+                    'label' => $term->name,
+                );
+            }
+        }
+
+        return $options;
     }
     
     /**
@@ -531,7 +554,7 @@ class PromptManagerBlocks {
     /**
      * Render Advance Query Block
      */
-    public function render_advance_query_block($attributes) {
+    public function render_advance_query_block($attributes, $content = '') {
         $args = array(
             'post_type'      => 'prompt',
             'posts_per_page' => intval($attributes['postsPerPage']),
@@ -539,16 +562,28 @@ class PromptManagerBlocks {
             'order'          => $attributes['order'],
         );
 
-        $prompts = get_posts($args);
-        if (empty($prompts)) {
+        if (!empty($attributes['category'])) {
+            $args['tax_query'] = array(
+                array(
+                    'taxonomy' => 'prompt_category',
+                    'field'    => 'slug',
+                    'terms'    => $attributes['category'],
+                ),
+            );
+        }
+
+        $query = new WP_Query($args);
+        if (!$query->have_posts()) {
             return '<p>' . __('No prompts found.', 'prompt-manager') . '</p>';
         }
 
-        $output = '<ul class="wp-block-prompt-manager-advance-query">';
-        foreach ($prompts as $prompt) {
-            $output .= '<li><a href="' . get_permalink($prompt->ID) . '">' . esc_html($prompt->post_title) . '</a></li>';
+        $output = '<div class="wp-block-prompt-manager-advance-query">';
+        while ($query->have_posts()) {
+            $query->the_post();
+            $output .= '<div class="prompt-query-item">' . do_blocks($content) . '</div>';
         }
-        $output .= '</ul>';
+        wp_reset_postdata();
+        $output .= '</div>';
 
         return $output;
     }
