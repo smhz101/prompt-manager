@@ -1,0 +1,16 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/protected-download",
+  "title": "Protected Download",
+  "category": "prompt-manager",
+  "icon": "download",
+  "attributes": {
+    "attachmentId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}
