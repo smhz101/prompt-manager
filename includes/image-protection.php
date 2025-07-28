@@ -375,7 +375,7 @@ class PromptManagerImageProtection {
         
         // Pattern 3: Background images in style attributes
         $content = preg_replace_callback(
-            '/style=["\'][^"\']*background-image:\s*url$$["\']?([^"\']*' . preg_quote($upload_url, '/') . '[^"\']*)["\']?$$[^"\']*["\']/',
+            "/style=['\"][^'\"]*background-image:\s*url\\([\\'\"]?([^\\'\"]*" . preg_quote($upload_url, '/') . "[^\\'\"]*)[\\'\"]?\\)[^'\"]*['\"]/",
             function($matches) use ($post_id) {
                 $style_attr = $matches[0];
                 $img_url = $matches[1];
