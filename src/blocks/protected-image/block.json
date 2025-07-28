@@ -1,0 +1,19 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/protected-image",
+  "title": "Protected Image",
+  "category": "prompt-manager",
+  "icon": "lock",
+  "attributes": {
+    "imageId": { "type": "number", "default": 0 },
+    "imageUrl": { "type": "string", "default": "" },
+    "alt": { "type": "string", "default": "" },
+    "caption": { "type": "string", "default": "" },
+    "size": { "type": "string", "default": "large" },
+    "blurIntensity": { "type": "number", "default": 15 },
+    "requireLogin": { "type": "boolean", "default": true }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}

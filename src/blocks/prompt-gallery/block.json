@@ -1,0 +1,18 @@
+{
+  "apiVersion": 2,
+  "name": "prompt-manager/prompt-gallery",
+  "title": "Prompt Gallery",
+  "category": "prompt-manager",
+  "icon": "grid-view",
+  "attributes": {
+    "numberOfPosts": { "type": "number", "default": 6 },
+    "columns": { "type": "number", "default": 3 },
+    "showNSFW": { "type": "boolean", "default": false },
+    "orderBy": { "type": "string", "default": "date" },
+    "order": { "type": "string", "default": "DESC" },
+    "category": { "type": "string", "default": "" }
+  },
+  "editorScript": "file:../../build/blocks.js",
+  "style": "file:../../assets/css/blocks.css",
+  "editorStyle": "file:../../assets/css/blocks-editor.css"
+}
