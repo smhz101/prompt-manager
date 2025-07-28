@@ -1,11 +1,16 @@
-(function () {
-  const { registerBlockType } = wp.blocks;
-  const { createElement, Fragment } = wp.element;
-  const { InspectorControls, useBlockProps } = wp.blockEditor;
-  const { PanelBody, SelectControl, ToggleControl, RangeControl, TextControl, ColorPicker } =
-    wp.components;
-  const { __ } = wp.i18n;
-  const { select } = wp.data;
+import { registerBlockType } from '@wordpress/blocks';
+import { createElement, Fragment } from '@wordpress/element';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import {
+  PanelBody,
+  SelectControl,
+  ToggleControl,
+  RangeControl,
+  TextControl,
+  ColorPicker,
+} from '@wordpress/components';
+import { __ } from '@wordpress/i18n';
+import { select } from '@wordpress/data';
 
   // Prompt Display Block
   registerBlockType('prompt-manager/prompt-display', {

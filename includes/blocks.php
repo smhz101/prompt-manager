@@ -52,39 +52,13 @@ class PromptManagerBlocks {
             return;
         }
         
-        // Register Prompt Display Block
-        register_block_type('prompt-manager/prompt-display', array(
-            'editor_script' => 'prompt-manager-blocks',
-            'editor_style'  => 'prompt-manager-blocks-editor',
-            'style'         => 'prompt-manager-blocks',
-            'attributes'    => array(
-                'promptId' => array(
-                    'type' => 'number',
-                    'default' => 0,
-                ),
-                'showTitle' => array(
-                    'type' => 'boolean',
-                    'default' => true,
-                ),
-                'showExcerpt' => array(
-                    'type' => 'boolean',
-                    'default' => true,
-                ),
-                'showImage' => array(
-                    'type' => 'boolean',
-                    'default' => true,
-                ),
-                'imageSize' => array(
-                    'type' => 'string',
-                    'default' => 'medium',
-                ),
-                'alignment' => array(
-                    'type' => 'string',
-                    'default' => 'none',
-                ),
-            ),
-            'render_callback' => array($this, 'render_prompt_display_block'),
-        ));
+        // Register Prompt Display Block using metadata
+        register_block_type(
+            PROMPT_MANAGER_PLUGIN_DIR . 'src/block.json',
+            array(
+                'render_callback' => array($this, 'render_prompt_display_block'),
+            )
+        );
         
         // Register Prompt Gallery Block
         register_block_type('prompt-manager/prompt-gallery', array(

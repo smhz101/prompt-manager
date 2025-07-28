@@ -209,29 +209,7 @@ function serve_blurred_or_block($post_id, $attachment_id) {
         // Complete block with informative message
         http_response_code(403);
         header('Content-Type: text/html; charset=utf-8');
-        echo '<!DOCTYPE html>
-<html>
-<head>
-    <title>Access Denied</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }
-        .container { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .icon { font-size: 48px; margin-bottom: 20px; }
-        h1 { color: #333; margin-bottom: 10px; }
-        p { color: #666; margin-bottom: 20px; }
-        .login-btn { background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
-        .login-btn:hover { background: #005a87; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="icon">🔒</div>
-        <h1>NSFW Content - Login Required</h1>
-        <p>This image contains NSFW content and requires login to view.</p>
-        <a href="' . wp_login_url() . '" class="login-btn">Login to View</a>
-    </div>
-</body>
-</html>';
+        echo '<!DOCTYPE html>\n<html>\n<head>\n    <title>Access Denied</title>\n    <style>\n        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background: #f5f5f5; }\n        .container { background: white; padding: 30px; border-radius: 10px; display: inline-block; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }\n        .icon { font-size: 48px; margin-bottom: 20px; }\n        h1 { color: #333; margin-bottom: 10px; }\n        p { color: #666; margin-bottom: 20px; }\n        .login-btn { background: #0073aa; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }\n        .login-btn:hover { background: #005a87; }\n    </style>\n</head>\n<body>\n    <div class="container">\n        <div class="icon">🔒</div>\n        <h1>NSFW Content - Login Required</h1>\n        <p>This image contains NSFW content and requires login to view.</p>\n        <a href="' . wp_login_url() . '" class="login-btn">Login to View</a>\n    </div>\n</body>\n</html>';
     }
 }
 
