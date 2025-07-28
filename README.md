@@ -126,7 +126,7 @@ Use `npm start` during development to automatically rebuild when `src/index.js` 
 - Prompt Submission
 - Protected Download
 - Prompt Slider
-- Advance Query
+- Advance Query - Query prompts with sorting, category, offset and optional NSFW filter
 
 
 ## Usage
